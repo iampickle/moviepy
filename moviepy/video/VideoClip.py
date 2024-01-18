@@ -325,7 +325,7 @@ class VideoClip(Clip):
         """
         name, ext = os.path.splitext(os.path.basename(filename))
         ext = ext[1:].lower()
-        logger = proglog.default_bar_logger(logger)
+        log = proglog.default_bar_logger(logger)
 
         if codec is None:
             try:
@@ -364,7 +364,7 @@ class VideoClip(Clip):
 
         # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
         # enough_cpu = (multiprocessing.cpu_count() > 1)
-        logger(message="MoviePy - Building video %s." % filename)
+        log(message="MoviePy - Building video %s." % filename)
         if make_audio:
             self.audio.write_audiofile(
                 audiofile,
@@ -374,7 +374,7 @@ class VideoClip(Clip):
                 audio_codec,
                 bitrate=audio_bitrate,
                 write_logfile=write_logfile,
-                logger=logger,
+                logger=log,
             )
 
         ffmpeg_write_video(
@@ -388,14 +388,14 @@ class VideoClip(Clip):
             audiofile=audiofile,
             threads=threads,
             ffmpeg_params=ffmpeg_params,
-            logger=logger,
+            logger=log,
             pixel_format=pixel_format,
         )
 
         if remove_temp and make_audio:
             if os.path.exists(audiofile):
                 os.remove(audiofile)
-        logger(message="MoviePy - video ready %s" % filename)
+        log(message="MoviePy - video ready %s" % filename)
 
     @requires_duration
     @use_clip_fps_by_default
